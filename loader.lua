@@ -1,5 +1,5 @@
 --==================================
--- Otaku Script Hub (Junkie Key System, Async)
+-- Otaku Script Hub (Junkie Key System, Secure + Async)
 --==================================
 
 -- Anti-spam / cooldown helper
@@ -11,22 +11,33 @@ local function SafeRun(func)
     task.delay(1.5, function() Cooldown = false end)
 end
 
--- Async Junkie Loader
+--==============================
+-- ASYNC JUNKIE KEY LOADER
+--==============================
 task.spawn(function()
     local success, err = pcall(function()
+        -- Load Junkie key system
         loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/150ec4d5189d200c0dca31805f00c38447e7e724743894f325fe60ec769f0a8d/download"))()
     end)
 
     if not success then
-        warn("Junkie Loader Error:", err)
+        warn("Junkie loader failed:", err)
         return
     end
 
-    -- Only setup UI after key system loads successfully
-    setupHubUI()
+    -- Wait until Junkie sets the global that confirms key is valid
+    -- Replace with the actual Junkie callback / global
+    if getgenv().KeyVerified then
+        -- Only load UI if key is valid
+        setupHubUI()
+    else
+        warn("Key not entered or invalid. UI will not load.")
+    end
 end)
 
--- Main UI setup function
+--==============================
+-- UI SETUP FUNCTION
+--==============================
 function setupHubUI()
     local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
@@ -52,18 +63,18 @@ function setupHubUI()
         }
     })
 
-    -- ========================
+    --==============================
     -- CREATE TABS
-    -- ========================
+    --==============================
     local HomeTab = Window:CreateTab("🏠 Home", "Home")
     local GamesTab = Window:CreateTab("🎮 Games", "Gamepad")
     local UniversalTab = Window:CreateTab("🌐 Universal", "Eye")
     local AdminTab = Window:CreateTab("🛠 Admin", "Settings")
     local CommunityTab = Window:CreateTab("👥 Community", "Users")
 
-    -- ========================
+    --==============================
     -- HOME TAB CONTENT
-    -- ========================
+    --==============================
     HomeTab:CreateSection("Hub Info")
     HomeTab:CreateLabel("👋 Welcome to Otaku Script Hub!")
     HomeTab:CreateLabel("Use the tabs to access all scripts and tools.")
@@ -106,9 +117,9 @@ function setupHubUI()
         end
     })
 
-    -- ========================
+    --==============================
     -- GAMES TAB
-    -- ========================
+    --==============================
     GamesTab:CreateSection("Game Scripts")
     GamesTab:CreateButton({
         Name = "🪖⚔️ BMR5",
@@ -174,9 +185,9 @@ function setupHubUI()
         end
     })
 
-    -- ========================
+    --==============================
     -- UNIVERSAL TAB
-    -- ========================
+    --==============================
     UniversalTab:CreateSection("Universal Scripts")
     UniversalTab:CreateButton({
         Name = "🌐 Universal ESP",
@@ -195,9 +206,9 @@ function setupHubUI()
         end
     })
 
-    -- ========================
+    --==============================
     -- ADMIN TAB
-    -- ========================
+    --==============================
     AdminTab:CreateSection("Admin Tools")
     AdminTab:CreateButton({
         Name = "Infinite Yield",
@@ -215,9 +226,9 @@ function setupHubUI()
         end
     })
 
-    -- ========================
+    --==============================
     -- COMMUNITY TAB
-    -- ========================
+    --==============================
     CommunityTab:CreateSection("Community Links")
     CommunityTab:CreateButton({
         Name = "📎 Copy Discord Invite",
@@ -229,9 +240,9 @@ function setupHubUI()
         end
     })
 
-    -- ========================
+    --==============================
     -- FINAL LOAD NOTIFICATION
-    -- ========================
+    --==============================
     Rayfield:Notify({
         Title = "Script Hub Loaded",
         Content = "Otaku Script Hub is ready to use!",
