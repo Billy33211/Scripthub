@@ -214,6 +214,14 @@ GamesTab:CreateButton({
     end,
 })
 
+GamesTab:CreateButton({
+    Name = "✈️ War Tycoon ",
+    Callback = function()
+        SafeRun(function()
+          loadstring(game:HttpGet("https://nobulem.wtf/loader.lua"))()
+        end)
+    end,
+})
 
 
 
